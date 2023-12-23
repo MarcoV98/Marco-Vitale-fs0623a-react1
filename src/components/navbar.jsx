@@ -1,20 +1,18 @@
 import React, { Component } from "react";
 import '@fortawesome/fontawesome-free/css/all.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '../css/style.css'
-import logo from '../css/logo.png'
+import '../css/style.css';
+import logo from '../css/logo.png';
 import Search from "./search";
 
 class Navbar extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      query: "",
-    };
-  }
+  state = {
+    query: "",
+  };
 
   handleSearch = (query) => {
     this.setState({ query });
+    this.props.searchHandler(query);
   };
 
   render() {
@@ -38,9 +36,9 @@ class Navbar extends Component {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav mr-auto">
             <li className="nav-item">
-              <a className="nav-link font-weight-bold" href="#">Home <span className="sr-only">(current)</span></a>
+              <a className="nav-link font-weight-bold" href="#">Home</a>
             </li>
-            <li className="nav-item active">
+            <li className="nav-item">
               <a className="nav-link font-weight-bold" href="#">TV Shows</a>
             </li>
             <li className="nav-item">
@@ -74,3 +72,5 @@ class Navbar extends Component {
 }
 
 export default Navbar;
+
+

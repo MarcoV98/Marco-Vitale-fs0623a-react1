@@ -2,23 +2,28 @@ import React, { Component } from 'react';
 import Comments from './Comments';
 
 class MovieGallery extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      movies: [],
-      selectedMovie: null,
-      loading: true,
-      error: null,
-    };
-  }
+  state = {
+    movies: [],
+    selectedMovie: null,
+    loading: true,
+    error: null,
+  };
 
   componentDidMount() {
     this.fetchMovies();
   }
 
-  async fetchMovies() {
+  componentDidUpdate(prevProps) {
+    if (prevProps.searchQuery !== this.props.searchQuery) {
+      this.fetchMovies();
+    }
+  }
+
+  fetchMovies = async () => {
     const { category, searchQuery } = this.props;
-    const apiUrl = searchQuery ? `http://www.omdbapi.com/?apikey=477dddc6&s=${searchQuery}` : `http://www.omdbapi.com/?apikey=477dddc6&s=${category}`;
+    const apiUrl = searchQuery
+      ? `http://www.omdbapi.com/?apikey=477dddc6&s=${searchQuery}`
+      : `http://www.omdbapi.com/?apikey=477dddc6&s=${category}`;
 
     try {
       const response = await fetch(apiUrl);
@@ -27,19 +32,16 @@ class MovieGallery extends Component {
     } catch (error) {
       this.setState({ error: `Error fetching ${category} movies: ${error.message}`, loading: false });
     }
-  }
+  };
 
-  showComments = (selectedMovie) => {
+  showComments = (imdbID) => {
+    const selectedMovie = this.state.movies.find((movie) => movie.imdbID === imdbID);
     this.setState({ selectedMovie });
   };
 
   render() {
     const { title, cardLimit } = this.props;
-    const { movies, selectedMovie, loading, error } = this.state;
-
-    if (loading) {
-      return <p>Loading...</p>;
-    }
+    const { movies, selectedMovie, error } = this.state;
 
     if (error) {
       return <p>{error}</p>;
@@ -48,25 +50,19 @@ class MovieGallery extends Component {
     return (
       <div>
         <h2>{title}</h2>
-        <div style={{ display: 'flex', overflow: 'scroll' }}>
+
+        <div style={{ display: 'flex', overflowX: 'scroll' }}>
           {movies.slice(0, cardLimit).map((movie) => (
-            <div key={movie.imdbID} className="movieCard">
-              <img
-                src={movie.Poster}
-                alt={movie.Title}
-                onClick={() => this.showComments(movie)}
-              />
+            <div key={movie.imdbID} className="movieCard" onClick={() => this.showComments(movie.imdbID)}>
+              <img src={movie.Poster} alt={movie.Title} />
               <p>{movie.Title}</p>
             </div>
           ))}
         </div>
+
         {selectedMovie && (
           <div>
-            <Comments
-              movieTitle={selectedMovie.imdbID}
-              imageUrl={selectedMovie.Poster}
-              movies={movies}
-            />
+            <Comments movieTitle={selectedMovie.imdbID} imageUrl={selectedMovie.Poster} />
           </div>
         )}
       </div>
@@ -75,3 +71,8 @@ class MovieGallery extends Component {
 }
 
 export default MovieGallery;
+
+
+
+
+

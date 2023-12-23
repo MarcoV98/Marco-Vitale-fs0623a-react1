@@ -1,33 +1,30 @@
 import React, { Component } from "react";
 
 class Search extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      query: "",
-    };
-  }
+  state = {
+    query: "",
+  };
 
-  handleSearch = () => {
-    const { searchHandler } = this.props;
-    const { query } = this.state;
-    searchHandler(query);
+  handleInputChange = (e) => {
+    this.setState({ query: e.target.value });
   };
 
   handleFormSubmit = (e) => {
     e.preventDefault();
-    this.handleSearch();
+    this.props.searchHandler(this.state.query);
   };
 
   render() {
+    const { query } = this.state;
+
     return (
       <div className="search-container">
         <form onSubmit={this.handleFormSubmit}>
           <input
             type="text"
             placeholder="Insert movie"
-            value={this.state.query}
-            onChange={(e) => this.setState({ query: e.target.value })}
+            value={query}
+            onChange={this.handleInputChange}
           />
           <button type="submit">
             <i className="fa fa-search"></i>
@@ -39,3 +36,5 @@ class Search extends Component {
 }
 
 export default Search;
+
+
