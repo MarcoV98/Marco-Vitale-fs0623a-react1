@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/style.css';
 import logo from '../css/logo.png';
 import Search from "./search";
+import { Link } from 'react-router-dom';
 
 class Navbar extends Component {
   state = {
@@ -39,7 +40,7 @@ class Navbar extends Component {
               <a className="nav-link font-weight-bold" href="#">Home</a>
             </li>
             <li className="nav-item">
-              <a className="nav-link font-weight-bold" href="#">TV Shows</a>
+              <Link to="/tv-shows" className="nav-link font-weight-bold">TV Shows</Link>
             </li>
             <li className="nav-item">
               <a className="nav-link font-weight-bold" href="#">Movies</a>
@@ -72,5 +73,6 @@ class Navbar extends Component {
 }
 
 export default Navbar;
+
 
 

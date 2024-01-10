@@ -1,14 +1,15 @@
-import React, { Component } from 'react';
-import Navbar from './components/navbar';
-import Footer from './components/footer';
-import MovieGallery from './components/MovieGallery';
+import React, { Component } from "react";
+import Home from "./components/Home";
+import TVShows from "./components/TVShows";
+import NotFound from "./components/NotFound";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      searchQuery: '',
+      searchQuery: "",
     };
   }
 
@@ -19,23 +20,16 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <Navbar searchHandler={this.handleSearch} />
-        </header>
-
-        <main>
-          <MovieGallery title="Harry Potter" category="harry potter" cardLimit={6} searchQuery={this.state.searchQuery} />
-          <MovieGallery title="Star Wars" category="star wars" cardLimit={6} searchQuery={this.state.searchQuery} />
-          <MovieGallery title="Marvel" category="marvel" cardLimit={6} searchQuery={this.state.searchQuery} />
-        </main>
-
-        <footer>
-          <Footer />
-        </footer>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/tv-shows" element={<TVShows />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
       </div>
     );
   }
 }
 
 export default App;
-
